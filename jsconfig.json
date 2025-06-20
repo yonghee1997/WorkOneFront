@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",           // 루트 기준
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@layout/*": ["src/layout/*"],
+      "@utils/*": ["src/utils/*"],
+      "@pages/*": ["src/pages/*"],
+      "@config/*": ["src/config/*"],
+      "@assets": ["src/assets/*"],
+      "@menu-items/*": ["src/menu-items/*"],
+      "@api": ["src/api/*"],
+      "@sections": ["src/sections/*"],
+      "@themes": ["src/themes/*"],
+    }
+  },
+  "include": ["src"]
+}
