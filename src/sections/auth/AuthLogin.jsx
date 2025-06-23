@@ -27,6 +27,9 @@ import AnimateButton from '@components/@extended/AnimateButton';
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
 
+import api from '@utils/axios'
+import { useNavigate } from 'react-router-dom';
+
 // ============================|| JWT - LOGIN ||============================ //
 
 export default function AuthLogin({ isDemo = false }) {
@@ -41,56 +44,71 @@ export default function AuthLogin({ isDemo = false }) {
     event.preventDefault();
   };
 
+  const navigate = useNavigate();
+
   return (
     <>
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
+          userId: '',
+          userPw: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string()
+          userId: Yup.string().required('ID is required'),
+          userPw: Yup.string()
             .required('Password is required')
-            .test('no-leading-trailing-whitespace', 'Password cannot start or end with spaces', (value) => value === value.trim())
-            .max(10, 'Password must be less than 10 characters')
         })}
+        onSubmit={async (values, {setErrors, setSubmitting}) => {
+          try {
+            const response = await api.post('/auth/login', {
+              userId: values.userId,
+              userPw: values.userPw
+            });
+
+            console.log('로그인 성공:', response.data);
+            navigate('/dashboard/default');
+          } catch (err) {
+            console.error('로그인 실패:', err.response?.data || err.message);
+            setErrors({ submit: err.response?.data || '로그인 실패' });
+            setSubmitting(false)
+        }
+      }}
       >
-        {({ errors, handleBlur, handleChange, touched, values }) => (
-          <form noValidate>
+        {({ errors, handleBlur, handleChange, touched, values, handleSubmit  }) => (
+          <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid size={12}>
                 <Stack sx={{ gap: 1 }}>
-                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
+                  <InputLabel htmlFor="userId">ID</InputLabel>
                   <OutlinedInput
-                    id="email-login"
-                    type="email"
+                    id="userId"
+                    type="text"
                     value={values.email}
-                    name="email"
+                    name="userId"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Enter email address"
+                    placeholder="Enter ID"
                     fullWidth
-                    error={Boolean(touched.email && errors.email)}
+                    error={Boolean(touched.userId && errors.userId)}
                   />
                 </Stack>
-                {touched.email && errors.email && (
+                {touched.userId && errors.userId && (
                   <FormHelperText error id="standard-weight-helper-text-email-login">
-                    {errors.email}
+                    {errors.userId}
                   </FormHelperText>
                 )}
               </Grid>
               <Grid size={12}>
                 <Stack sx={{ gap: 1 }}>
-                  <InputLabel htmlFor="password-login">Password</InputLabel>
+                  <InputLabel htmlFor="userPw">Password</InputLabel>
                   <OutlinedInput
                     fullWidth
-                    error={Boolean(touched.password && errors.password)}
-                    id="-password-login"
+                    error={Boolean(touched.userPw && errors.userPw)}
+                    id="userPw"
                     type={showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    name="password"
+                    value={values.userPw}
+                    name="userPw"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     endAdornment={
@@ -109,9 +127,9 @@ export default function AuthLogin({ isDemo = false }) {
                     placeholder="Enter password"
                   />
                 </Stack>
-                {touched.password && errors.password && (
+                {touched.userPw && errors.userPw && (
                   <FormHelperText error id="standard-weight-helper-text-password-login">
-                    {errors.password}
+                    {errors.userPw}
                   </FormHelperText>
                 )}
               </Grid>
@@ -136,7 +154,7 @@ export default function AuthLogin({ isDemo = false }) {
               </Grid>
               <Grid size={12}>
                 <AnimateButton>
-                  <Button fullWidth size="large" variant="contained" color="primary">
+                  <Button type="submit" fullWidth size="large" variant="contained" color="primary">
                     Login
                   </Button>
                 </AnimateButton>

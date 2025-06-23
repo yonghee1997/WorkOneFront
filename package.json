@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^7.1.2",
     "@mui/x-charts": "^8.5.3",
+    "axios": "^1.10.0",
     "formik": "^2.4.6",
     "framer-motion": "^12.18.1",
     "lodash-es": "^4.17.21",
