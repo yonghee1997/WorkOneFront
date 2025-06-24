@@ -30,6 +30,13 @@ import SettingOutlined from '@ant-design/icons/SettingOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import avatar1 from '@assets/images/users/avatar-1.png';
 
+import { useSelector } from 'react-redux';
+
+import { useDispatch } from 'react-redux';
+import { clearUser } from '@store/userSlice';
+import { useNavigate } from 'react-router-dom';
+import api from '@utils/axios';
+
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
   return (
@@ -50,6 +57,9 @@ function a11yProps(index) {
 
 export default function Profile() {
   const theme = useTheme();
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -68,6 +78,16 @@ export default function Profile() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await api.post('/auth/logout'); // 백엔드 세션 삭제
+      dispatch(clearUser()); // Redux 상태 초기화
+      navigate('/login'); // 로그인 페이지로 이동
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return (
@@ -90,7 +110,7 @@ export default function Profile() {
         <Stack direction="row" sx={{ gap: 1.25, alignItems: 'center', p: 0.5 }}>
           <Avatar alt="profile user" src={avatar1} size="sm" />
           <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>
-            John Doe
+            {user.userNm}
           </Typography>
         </Stack>
       </ButtonBase>
@@ -123,7 +143,7 @@ export default function Profile() {
                         <Stack direction="row" sx={{ gap: 1.25, alignItems: 'center' }}>
                           <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                           <Stack>
-                            <Typography variant="h6">John Doe</Typography>
+                            <Typography variant="h6">{user.userNm}</Typography>
                             <Typography variant="body2" color="text.secondary">
                               UI/UX Designer
                             </Typography>
@@ -132,7 +152,7 @@ export default function Profile() {
                       </Grid>
                       <Grid>
                         <Tooltip title="Logout">
-                          <IconButton size="large" sx={{ color: 'text.primary' }}>
+                          <IconButton size="large" onClick={handleLogout} sx={{ color: 'text.primary' }}>
                             <LogoutOutlined />
                           </IconButton>
                         </Tooltip>

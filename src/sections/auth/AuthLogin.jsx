@@ -30,9 +30,17 @@ import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
 import api from '@utils/axios'
 import { useNavigate } from 'react-router-dom';
 
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@store/userSlice';
+
 // ============================|| JWT - LOGIN ||============================ //
 
 export default function AuthLogin({ isDemo = false }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState('');
+  const [userPw, setUserPw] = useState('');
   const [checked, setChecked] = React.useState(false);
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -43,9 +51,7 @@ export default function AuthLogin({ isDemo = false }) {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
-  const navigate = useNavigate();
-
+  
   return (
     <>
       <Formik
@@ -67,6 +73,10 @@ export default function AuthLogin({ isDemo = false }) {
             });
 
             console.log('로그인 성공:', response.data);
+            dispatch(setUser({
+              userId: response.data.userId,
+              userNm: response.data.userNm
+            }));
             navigate('/dashboard/default');
           } catch (err) {
             console.error('로그인 실패:', err.response?.data || err.message);

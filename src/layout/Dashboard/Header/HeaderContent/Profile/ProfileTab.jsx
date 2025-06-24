@@ -13,9 +13,27 @@ import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import WalletOutlined from '@ant-design/icons/WalletOutlined';
 
+import { useDispatch } from 'react-redux';
+import { clearUser } from '@store/userSlice';
+import { useNavigate } from 'react-router-dom';
+import api from '@utils/axios';
+
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
 export default function ProfileTab() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await api.post('/auth/logout'); // 백엔드 세션 삭제
+      dispatch(clearUser()); // Redux 상태 초기화
+      navigate('/login'); // 로그인 페이지로 이동
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
       <ListItemButton>
@@ -43,7 +61,7 @@ export default function ProfileTab() {
         </ListItemIcon>
         <ListItemText primary="Billing" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
           <LogoutOutlined />
         </ListItemIcon>

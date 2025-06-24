@@ -28,6 +28,7 @@ export default defineConfig({
       '@api': path.resolve(__dirname, 'src/api'),
       '@sections': path.resolve(__dirname, 'src/sections'),
       '@themes': path.resolve(__dirname, 'src/themes'),
+      '@store': path.resolve(__dirname, 'src/store'),
     }
   }
 })

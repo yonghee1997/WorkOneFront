@@ -13,6 +13,7 @@
       "@api": ["src/api/*"],
       "@sections": ["src/sections/*"],
       "@themes": ["src/themes/*"],
+      "@store": ["src/store/*"],
     }
   },
   "include": ["src"]

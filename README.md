@@ -17,3 +17,4 @@
 `13. npm install yup`
 `14. npm install formik`
 `15. npm install axios`
+`16. npm install @reduxjs/toolkit react-redux`
