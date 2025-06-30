@@ -27,8 +27,8 @@ export default function CodeManagement() {
   const fetchDetailAndAttr = async (codeId) => {
     try {
       const [detailRes, attrRes] = await Promise.all([
-        api.get(`/api/code/detail?codeId=${codeId}`),
-        api.get(`/api/code/attr?codeId=${codeId}`)
+        api.get(`/code/detail?codeId=${codeId}`),
+        api.get(`/code/attr?codeId=${codeId}`)
       ]);
       setDetailCodes(detailRes.data || []);
       setAttrCodes(attrRes.data || []);
@@ -42,22 +42,22 @@ export default function CodeManagement() {
   }, []);
 
   const commonCodeColumns = [
-    { field: 'codeId', headerName: '코드ID', flex: 1, headerAlign: 'center' },
-    { field: 'codeName', headerName: '코드명', flex: 1, headerAlign: 'center' },
-    { field: 'description', headerName: '설명', flex: 1, headerAlign: 'center' },
-    { field: 'useYn', headerName: '사용여부', flex: 1, headerAlign: 'center' },
-    { field: 'createDt', headerName: '생성일자', flex: 1, headerAlign: 'center' },
-    { field: 'createId', headerName: '생성자', flex: 1, headerAlign: 'center' },
-    { field: 'updateDt', headerName: '변경일자', flex: 1, headerAlign: 'center' },
-    { field: 'updateId', headerName: '변경자', flex: 1, headerAlign: 'center' }
+    { field: 'codeId', headerName: '코드ID', flex: 1, headerAlign: 'center', align:'center', cellClassName: 'column-border' },
+    { field: 'codeNm', headerName: '코드명', flex: 1, headerAlign: 'center', align:'left', cellClassName: 'column-border' },
+    { field: 'description', headerName: '설명', flex: 1, headerAlign: 'center', align:'left', cellClassName: 'column-border' },
+    { field: 'useYn', headerName: '사용여부', flex: 1, headerAlign: 'center', align:'center', cellClassName: 'column-border' },
+    { field: 'createDt', headerName: '생성일자', flex: 1, headerAlign: 'center', align:'left', cellClassName: 'column-border' },
+    { field: 'createId', headerName: '생성자', flex: 1, headerAlign: 'center', align:'center', cellClassName: 'column-border' },
+    { field: 'updateDt', headerName: '변경일자', flex: 1, headerAlign: 'center', align:'left', cellClassName: 'column-border' },
+    { field: 'updateId', headerName: '변경자', flex: 1, headerAlign: 'center', align:'center', cellClassName: 'column-border' }
   ];
 
   const detailCodeColumns = [
-    { field: 'codeId', headerName: '코드ID', flex: 1, headerAlign: 'center' },
+    { field: 'codeId', headerName: '코드ID', flex: 1, headerAlign: 'center', align:'center' },
     { field: 'codeDetailId', headerName: '코드상세ID', flex: 1, headerAlign: 'center' },
-    { field: 'detailName', headerName: '코드상세명', flex: 1, headerAlign: 'center' },
+    { field: 'codeDetailNm', headerName: '코드상세명', flex: 1, headerAlign: 'center' },
     { field: 'description', headerName: '설명', flex: 1, headerAlign: 'center' },
-    { field: 'order', headerName: '정렬순서', flex: 1, headerAlign: 'center' },
+    { field: 'orderNo', headerName: '정렬순서', flex: 1, headerAlign: 'center' },
     { field: 'useYn', headerName: '사용여부', flex: 1, headerAlign: 'center' },
     { field: 'createDt', headerName: '생성일자', flex: 1, headerAlign: 'center' },
     { field: 'createId', headerName: '생성자', flex: 1, headerAlign: 'center' },
@@ -90,7 +90,7 @@ export default function CodeManagement() {
             rows={commonCodes}
             columns={commonCodeColumns}
             getRowId={(row) => row.codeId}
-            autoHeight
+            height='300'
             hideFooterSelectedRowCount
             sx={{
               border: 1,
@@ -101,6 +101,9 @@ export default function CodeManagement() {
               },
               '& .MuiDataGrid-cell': {
                 borderBottom: '1px solid #eee'
+              },
+              '& .column-border': {
+                borderRight: '1px solid #ddd'
               }
             }}
           />
@@ -119,8 +122,8 @@ export default function CodeManagement() {
             <DataGrid
               rows={detailCodes}
               columns={detailCodeColumns}
-              getRowId={(row) => row.detailId}
-              autoHeight
+              getRowId={(row) => row.codeDetailId}
+              height='300'
               hideFooterSelectedRowCount
               sx={{
                 border: 1,
@@ -131,6 +134,9 @@ export default function CodeManagement() {
                 },
                 '& .MuiDataGrid-cell': {
                   borderBottom: '1px solid #eee'
+                },
+                '& .column-border': {
+                borderRight: '1px solid #ddd'
                 }
               }}
             />
@@ -151,6 +157,9 @@ export default function CodeManagement() {
                 },
                 '& .MuiDataGrid-cell': {
                   borderBottom: '1px solid #eee'
+                },
+                '& .column-border': {
+                borderRight: '1px solid #ddd'
                 }
               }}
             />
